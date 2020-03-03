@@ -3,6 +3,7 @@ var Factory = Object.getPrototypeOf(app).Factory = new Component("factory");
 Factory.createdAt      = "2.0.0";
 Factory.lastUpdate     = "2.0.0";
 Factory.version        = "1";
+Factory.factoryExclude = true;
 // Factory.loadingMsg     = "This message will display in the console when component will be loaded.";
 
 Factory.prototype.onCreate = function(){
@@ -13,9 +14,10 @@ Factory.prototype.onCreate = function(){
 	factory.$constructor = $('<div class="factory__constructor"></div>');
 
 	if (config.components.length > 1) {
-		for(var item of config.components)
-			if (item != 'factory')
+		for(var item of config.components){
+			if (!app[utils.getClassName(item)].factoryExclude)
 				factory.$select.append('<option value="'+item+'">'+item+'</option>');
+		}
 		factory.$el.append(factory.$select);
 		factory.$el.append(factory.$sampler);
 		factory.$el.append(factory.$editor);
@@ -50,7 +52,6 @@ Factory.prototype.onCreate = function(){
     var timerEdit,timerEditValue;
 	var editorText = factory.$editor.find('textarea').val();
 	factory.$editor.find('textarea').on('change keyup',function(e,forced){
-		console.log('textarea forced',forced);
 		timerEditValue = 500;
 		if(forced) 
 			timerEditValue = 0;
