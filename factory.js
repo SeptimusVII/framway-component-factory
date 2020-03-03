@@ -4,24 +4,46 @@ Factory.createdAt      = "2.0.0";
 Factory.lastUpdate     = "2.0.0";
 Factory.version        = "1";
 Factory.factoryExclude = true;
-// Factory.loadingMsg     = "This message will display in the console when component will be loaded.";
+Factory.loadingMsg     = "This component require the following components to work properly: \n - tabs";
 
 Factory.prototype.onCreate = function(){
 	var factory = this;
-	factory.$select = $('<select class="factory__select"><option value>Select a component</option></select>');
+	factory.$select = $('<select class="factory__select"><option value>- Select a component -</option></select>');
 	factory.$sampler = $('<div class="factory__sampler"></div>');
-	factory.$editor = $('<div class="factory__editor hidden"><button class="copy">Copy</button><textarea></textarea></div>');
+	factory.$editor = $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
 	factory.$constructor = $('<div class="factory__constructor"></div>');
+	factory.$infos = $(`
+		<div class="factory__component__infos">
+			<div class="version">Version: <span class="version__value"></span></div>
+			<div class="createdAt">Created: <span class="createdAt__value"></span></div>
+			<div class="lastUpdate">Updated: <span class="lastUpdate__value"></span></div>
+		</div>
+	`);
+	factory.$tabs = $(`
+		<div class="tabs hidden">
+			<div class="tabs__nav">
+				<button class="btn-sm">EDITOR</button>
+				<button class="btn-sm">ABOUT</button>
+			</div>
+			<div class="tabs__content">
+				<div class="tab editor"></div>
+				<div class="tab about"></div>
+			</div>
+		</div>
+	`);
+	factory.$tabs.tabs();
+
 
 	if (config.components.length > 1) {
 		for(var item of config.components){
 			if (!app[utils.getClassName(item)].factoryExclude)
-				factory.$select.append('<option value="'+item+'">'+item+'</option>');
+				factory.$select.append('<option value="'+item+'">'+utils.getClassName(item)+'</option>');
 		}
 		factory.$el.append(factory.$select);
 		factory.$el.append(factory.$sampler);
-		factory.$el.append(factory.$editor);
-		factory.$el.append(factory.$constructor);
+		factory.$el.append(factory.$tabs);
+		factory.$tabs.find('.tab.editor').append(factory.$editor).append(factory.$constructor);
+		factory.$tabs.find('.tab.about').append(factory.$infos);
 	} else {
 		factory.$el.append('<p class="error">No component available</p>');
 	}
@@ -29,11 +51,14 @@ Factory.prototype.onCreate = function(){
 	factory.$select.on('change',function(){
 		if ($(this).val() != ''){
 			var component = $('<div>'+require('html-loader!../'+factory.$select.val()+'/sample.html')+'</div>');
-			factory.$editor.removeClass('hidden');
-			if (component.find('constructor').length)
-				factory.$constructor.html(getConstructor(component.find('constructor').remove()));
-			else
-				factory.$constructor.html('');
+			factory.$tabs.removeClass('hidden');
+			
+			factory.$infos.find('.version__value').html(app[utils.getClassName(item)].version);
+			factory.$infos.find('.createdAt__value').html(app[utils.getClassName(item)].createdAt);
+			factory.$infos.find('.lastUpdate__value').html(app[utils.getClassName(item)].lastUpdate);
+
+			if (component.find('constructor').length) factory.$constructor.html(getConstructor(component.find('constructor').remove()));
+			else factory.$constructor.html('');
 			factory.$editor.find('textarea').val(component.get(0).innerHTML);
 			factory.$constructor.find('.select,.number').trigger('change');
 			factory.$constructor.find('.checkbox').each(function(){
@@ -44,7 +69,7 @@ Factory.prototype.onCreate = function(){
 		}
 		else{
 			factory.$editor.find('textarea').val('').trigger('change',true);
-			factory.$editor.addClass('hidden');
+			factory.$tabs.addClass('hidden');
 			factory.$constructor.html('');
 		}
 	});
