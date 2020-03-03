@@ -1,11 +1,20 @@
-.factory{}
-
-.factory__editor{position: relative;font-size: 0.8em;}
-.factory__editor textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing/2; border-radius: $radius;  margin-bottom: $spacing; border: 0;}
-.factory__editor .copy{position: absolute; right: 5px; top:5px; @extend .btn-sm; z-index: 1; opacity: 0.5; margin: 0;
-  &:hover{opacity: 1;}
+.factory{
+	.tabs__nav{margin-bottom: 3px;}
 }
 
+%factory__block{@extend %paper; padding: 1rem; margin-bottom: 1rem; background: white;}
+
+.factory__select{margin-bottom: 1rem;}
+.factory__sampler{@extend %factory__block; border: 2px dashed $primary;}
+.factory__constructor{@extend %factory__block;}
+.factory__component__infos{@extend %factory__block;}
+
+.factory__editor{position: relative;font-size: 0.8em;
+	textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing/2; border-radius: $radius;  margin-bottom: 1rem; border: 0;}
+	.copy{position: absolute; right: 5px; top:5px; @extend .btn-sm; z-index: 1; opacity: 0.5; margin: 0;
+	  &:hover{opacity: 1;}
+	}
+}
 
 .factory__helper__icon{float: right; font-size: 1.2em; margin: 0.3em; cursor: pointer;
     &:hover+.factory__helper__text{opacity: 1;visibility: visible;}
