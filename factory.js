@@ -6,6 +6,15 @@ Factory.version        = "1";
 Factory.factoryExclude = true;
 Factory.loadingMsg     = "This component require the following components to work properly: \n - tabs";
 
+Factory.prototype.onResize = function(){
+	var factory = this;
+	factory.$tabs.find('.tab.editor').removeClass('cols-1');
+	factory.$constructor.removeClass('cols-1');
+	if(factory.$constructor.innerWidth() < 450)
+		factory.$tabs.find('.tab.editor').addClass('cols-1');
+	if(factory.$constructor.innerWidth() < 400)
+		factory.$constructor.addClass('cols-1');
+}
 Factory.prototype.onCreate = function(){
 	var factory = this;
 	factory.$select = $('<select class="factory__select"><option value>- Select a component -</option></select>');
@@ -14,9 +23,25 @@ Factory.prototype.onCreate = function(){
 	factory.$constructor = $('<div class="factory__constructor"></div>');
 	factory.$infos = $(`
 		<div class="factory__component__infos">
-			<div class="version">Version: <span class="version__value"></span></div>
-			<div class="createdAt">Created: <span class="createdAt__value"></span></div>
-			<div class="lastUpdate">Updated: <span class="lastUpdate__value"></span></div>
+			<div class="title"><span class="name"></span> <span class="version">[v<span class="version__value"></span>]</span></div>
+			<table class="table table-sm">
+				<tr>
+					<td class="">Created</td>
+					<td class="createdAt"></td>
+				</tr>
+				<tr>
+					<td class="">Updated</td>
+					<td class="lastUpdate"></td>
+				</tr>
+				<tr>
+					<td class="">CSS class</td>
+					<td class="cssClass"></td>
+				</tr>
+				<tr>
+					<td class="">Notes</td>
+					<td class="loadingMsg ft-i"></td>
+				</tr>
+			</table>
 		</div>
 	`);
 	factory.$tabs = $(`
@@ -32,7 +57,6 @@ Factory.prototype.onCreate = function(){
 		</div>
 	`);
 	factory.$tabs.tabs();
-
 
 	if (config.components.length > 1) {
 		for(var item of config.components){
@@ -50,15 +74,20 @@ Factory.prototype.onCreate = function(){
 
 	factory.$select.on('change',function(){
 		if ($(this).val() != ''){
-			var component = $('<div>'+require('html-loader!../'+factory.$select.val()+'/sample.html')+'</div>');
+			var componentName = factory.$select.val();
+			var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
 			factory.$tabs.removeClass('hidden');
+			factory.$constructor.removeClass('hidden');
 			
-			factory.$infos.find('.version__value').html(app[utils.getClassName(item)].version);
-			factory.$infos.find('.createdAt__value').html(app[utils.getClassName(item)].createdAt);
-			factory.$infos.find('.lastUpdate__value').html(app[utils.getClassName(item)].lastUpdate);
+			factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
+			factory.$infos.find('.cssClass').html(componentName || '');
+			factory.$infos.find('.version__value').html(app[utils.getClassName(componentName)].version || '');
+			factory.$infos.find('.createdAt').html(app[utils.getClassName(componentName)].createdAt || '');
+			factory.$infos.find('.lastUpdate').html(app[utils.getClassName(componentName)].lastUpdate || '');
+			factory.$infos.find('.loadingMsg').html(app[utils.getClassName(componentName)].loadingMsg || '');
 
 			if (component.find('constructor').length) factory.$constructor.html(getConstructor(component.find('constructor').remove()));
-			else factory.$constructor.html('');
+			else factory.$constructor.addClass('hidden').html('');
 			factory.$editor.find('textarea').val(component.get(0).innerHTML);
 			factory.$constructor.find('.select,.number').trigger('change');
 			factory.$constructor.find('.checkbox').each(function(){
@@ -107,10 +136,11 @@ Factory.prototype.onCreate = function(){
   		factory.applyConstructorChanges($(this));
   	});
 
-
 	// tests
 	factory.$select.find('option').last().get(0).selected = true;
 	factory.$select.trigger('change');
+  	
+  	factory.onResize();
 }
 
 Factory.prototype.applyConstructorChanges = function($input){
@@ -183,7 +213,7 @@ var getConstructor = function(constructor){
 		}
 		switch(field.type){
 			case 'separator': 
-				inputGroup += '<p class="sep-bottom">'+field.label+'</p>';
+				inputGroup += '<p class="separator">'+field.label+'</p>';
 			break;
 			case 'select': 
 				inputGroup += '<label for="'+field.id+'">'+field.label+'</label>'
