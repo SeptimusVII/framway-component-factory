@@ -21,41 +21,8 @@ Factory.prototype.onCreate = function(){
 	factory.$sampler = $('<div class="factory__sampler"></div>');
 	factory.$editor = $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
 	factory.$constructor = $('<div class="factory__constructor"></div>');
-	factory.$infos = $(`
-		<div class="factory__component__infos">
-			<div class="title"><span class="name"></span> <span class="version">[v<span class="version__value"></span>]</span></div>
-			<table class="table table-sm">
-				<tr>
-					<td class="">Created</td>
-					<td class="createdAt"></td>
-				</tr>
-				<tr>
-					<td class="">Updated</td>
-					<td class="lastUpdate"></td>
-				</tr>
-				<tr>
-					<td class="">CSS class</td>
-					<td class="cssClass"></td>
-				</tr>
-				<tr>
-					<td class="">Notes</td>
-					<td class="loadingMsg ft-i"></td>
-				</tr>
-			</table>
-		</div>
-	`);
-	factory.$tabs = $(`
-		<div class="tabs hidden">
-			<div class="tabs__nav">
-				<button class="btn-sm">EDITOR</button>
-				<button class="btn-sm">ABOUT</button>
-			</div>
-			<div class="tabs__content">
-				<div class="tab editor"></div>
-				<div class="tab about"></div>
-			</div>
-		</div>
-	`);
+	factory.$infos = $(require('html-loader!./templates/infos.html'));
+	factory.$tabs = $(require('html-loader!./templates/tabs.html'));
 	factory.$tabs.tabs();
 
 	if (config.components.length > 1) {
@@ -66,7 +33,7 @@ Factory.prototype.onCreate = function(){
 		factory.$el.append(factory.$select);
 		factory.$el.append(factory.$sampler);
 		factory.$el.append(factory.$tabs);
-		factory.$tabs.find('.tab.editor').append(factory.$editor).append(factory.$constructor);
+		factory.$tabs.find('.tab.editor').append(factory.$editor).append($('<div></div>').append(factory.$constructor));
 		factory.$tabs.find('.tab.about').append(factory.$infos);
 	} else {
 		factory.$el.append('<p class="error">No component available</p>');
@@ -117,6 +84,8 @@ Factory.prototype.onCreate = function(){
 				factory.$sampler.html(val);
 			}
 		},timerEditValue);
+		this.style.height = "auto";
+     	this.style.height = (this.scrollHeight + 10) + "px";
 	});
 	factory.$editor.find('.copy').on('click',function(){
 		var elem = $(this).parent().find('textarea').get(0);
