@@ -1,14 +1,13 @@
 .factory{
 	.tabs__nav{margin-bottom: 3px;}
 	.tab.editor{@extend .d-grid,.cols-2,.gap-1-rem;font-size: 0.8em;}
-	.tab.active{overflow: visible;}
 }
 
 %factory__block{@extend %paper; padding: 1rem; margin-bottom: 1rem; background: white;}
 
 .factory__select{margin-bottom: 1rem;}
 .factory__sampler{@extend %factory__block; border: 2px dashed rgba($primary,0.5); overflow: hidden; }
-.factory__constructor{@extend %factory__block; @extend .d-grid,.cols-2,.gap-1-rem;
+.factory__constructor{@extend %factory__block; @extend .d-grid,.cols-2,.gap-1-rem; margin-bottom: 0;
 	& .separator{@extend .cols-span-2;padding-bottom: 0.3em; margin-bottom: 0; border-bottom: 1px solid rgba($primary,0.5); font-weight: bold;}
 	&.cols-1>.separator{@extend .cols-span-1;}
 	.form-group{
