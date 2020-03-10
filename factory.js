@@ -17,13 +17,18 @@ Factory.prototype.onResize = function(){
 }
 Factory.prototype.onCreate = function(){
 	var factory = this;
-	factory.$select = $('<select class="factory__select"><option value>- Select a component -</option></select>');
-	factory.$sampler = $('<div class="factory__sampler"></div>');
+	factory.$select = $('<select data-component class="factory__select"><option value>- Select a component -</option></select>');
+	factory.$sampler = $('<div class="factory__sampler hidden"></div>');
 	factory.$editor = $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
 	factory.$constructor = $('<div class="factory__constructor"></div>');
 	factory.$infos = $(require('html-loader!./templates/infos.html'));
 	factory.$tabs = $(require('html-loader!./templates/tabs.html'));
-	factory.$tabs.tabs();
+	if(typeof app.Tabs == 'function')
+		factory.$tabs.tabs();
+		factory.$tabs.find('.tabs__nav button').on('click',function(){
+		// update url
+		app.updateUrlNavigation(factory.getNavState());
+	});
 
 	if (config.components.length > 1) {
 		for(var item of config.components){
@@ -39,12 +44,14 @@ Factory.prototype.onCreate = function(){
 		factory.$el.append('<p class="error">No component available</p>');
 	}
 
+	// main select management
 	factory.$select.on('change',function(){
 		if ($(this).val() != ''){
 			var componentName = factory.$select.val();
 			var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
 			factory.$tabs.removeClass('hidden');
 			factory.$constructor.removeClass('hidden');
+			factory.$sampler.removeClass('hidden');
 			
 			factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
 			factory.$infos.find('.cssClass').html(componentName || '');
@@ -66,8 +73,11 @@ Factory.prototype.onCreate = function(){
 		else{
 			factory.$editor.find('textarea').val('').trigger('change',true);
 			factory.$tabs.addClass('hidden');
-			factory.$constructor.html('');
+			factory.$constructor.addClass('hidden').html('');
+			factory.$sampler.addClass('hidden');
 		}
+		// update url
+		app.updateUrlNavigation(factory.getNavState());
 	});
 
     var timerEdit,timerEditValue;
@@ -104,14 +114,28 @@ Factory.prototype.onCreate = function(){
   	$('body').on('change','.factory__constructor .number',function(e){
   		factory.applyConstructorChanges($(this));
   	});
+  	
 
 	// tests
-	factory.$select.find('option').last().get(0).selected = true;
-	factory.$select.trigger('change');
+	// factory.$select.find('option').last().get(0).selected = true;
+	// factory.$select.trigger('change');
   	
   	factory.onResize();
 }
 
+Factory.prototype.getNavState = function(){
+	var factory = this;
+	var objNav = {framnav: 'factory'}
+	if (factory.$select.val() != '') {
+		objNav.component = factory.$select.val();
+		objNav.tab = factory.$tabs.find('.tabs__nav button.active').attr('data-tab');
+	} else {
+		factory.$tabs.addClass('hidden');
+		factory.$constructor.addClass('hidden').html('');
+		factory.$sampler.addClass('hidden');
+	}
+	return objNav;
+}
 Factory.prototype.applyConstructorChanges = function($input){
 	var factory = this;
 
