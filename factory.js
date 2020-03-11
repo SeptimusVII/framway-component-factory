@@ -51,6 +51,7 @@ Factory.prototype.onCreate = function(){
 			var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
 			factory.$tabs.removeClass('hidden');
 			factory.$constructor.removeClass('hidden');
+			factory.$tabs.find('.tab.editor').removeClass('cols-1');
 			factory.$sampler.removeClass('hidden');
 			
 			factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
@@ -60,8 +61,12 @@ Factory.prototype.onCreate = function(){
 			factory.$infos.find('.lastUpdate').html(app[utils.getClassName(componentName)].lastUpdate || '');
 			factory.$infos.find('.loadingMsg').html(app[utils.getClassName(componentName)].loadingMsg || '');
 
-			if (component.find('constructor').length) factory.$constructor.html(getConstructor(component.find('constructor').remove()));
-			else factory.$constructor.addClass('hidden').html('');
+			if (component.find('constructor').length) 
+				factory.$constructor.html(getConstructor(component.find('constructor').remove()));
+			else {
+				factory.$constructor.addClass('hidden').html('');
+				factory.$tabs.find('.tab.editor').addClass('cols-1');
+			}
 			factory.$editor.find('textarea').val(component.get(0).innerHTML);
 			factory.$constructor.find('.select,.number').trigger('change');
 			factory.$constructor.find('.checkbox').each(function(){
@@ -74,6 +79,7 @@ Factory.prototype.onCreate = function(){
 			factory.$editor.find('textarea').val('').trigger('change',true);
 			factory.$tabs.addClass('hidden');
 			factory.$constructor.addClass('hidden').html('');
+			factory.$tabs.find('.tab.editor').addClass('cols-1');
 			factory.$sampler.addClass('hidden');
 		}
 		// update url
@@ -132,6 +138,7 @@ Factory.prototype.getNavState = function(){
 	} else {
 		factory.$tabs.addClass('hidden');
 		factory.$constructor.addClass('hidden').html('');
+		factory.$tabs.find('.tab.editor').addClass('cols-1');
 		factory.$sampler.addClass('hidden');
 	}
 	return objNav;
