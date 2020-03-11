@@ -17,7 +17,7 @@ Factory.prototype.onResize = function(){
 }
 Factory.prototype.onCreate = function(){
 	var factory = this;
-	factory.$select = $('<select data-component class="factory__select"><option value>- Select a component -</option></select>');
+	factory.$select = $('<select data-component class="factory__select">/select>');
 	factory.$sampler = $('<div class="factory__sampler hidden"></div>');
 	factory.$editor = $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
 	factory.$constructor = $('<div class="factory__constructor"></div>');
