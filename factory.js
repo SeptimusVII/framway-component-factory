@@ -45,47 +45,9 @@ Factory.prototype.onCreate = function(){
 	}
 
 	// main select management
-	factory.$select.on('change',function(){
-		if ($(this).val() != ''){
-			var componentName = factory.$select.val();
-			var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
-			factory.$tabs.removeClass('hidden');
-			factory.$constructor.removeClass('hidden');
-			factory.$tabs.find('.tab.editor').removeClass('cols-1');
-			factory.$sampler.removeClass('hidden');
-			
-			factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
-			factory.$infos.find('.cssClass').html(componentName || '');
-			factory.$infos.find('.version__value').html(app[utils.getClassName(componentName)].version || '');
-			factory.$infos.find('.createdAt').html(app[utils.getClassName(componentName)].createdAt || '');
-			factory.$infos.find('.lastUpdate').html(app[utils.getClassName(componentName)].lastUpdate || '');
-			factory.$infos.find('.loadingMsg').html(app[utils.getClassName(componentName)].loadingMsg || '');
+	factory.$select.on('change', function(){factory.updateDisplay()});
 
-			if (component.find('constructor').length) 
-				factory.$constructor.html(getConstructor(component.find('constructor').remove()));
-			else {
-				factory.$constructor.addClass('hidden').html('');
-				factory.$tabs.find('.tab.editor').addClass('cols-1');
-			}
-			factory.$editor.find('textarea').val(component.get(0).innerHTML);
-			factory.$constructor.find('.select,.number').trigger('change');
-			factory.$constructor.find('.checkbox').each(function(){
-				if($(this).data('selected'))
-	        		$(this).trigger('click');
-			});
-			factory.$editor.find('textarea').trigger('change',true);
-		}
-		else{
-			factory.$editor.find('textarea').val('').trigger('change',true);
-			factory.$tabs.addClass('hidden');
-			factory.$constructor.addClass('hidden').html('');
-			factory.$tabs.find('.tab.editor').addClass('cols-1');
-			factory.$sampler.addClass('hidden');
-		}
-		// update url
-		app.updateUrlNavigation(factory.getNavState());
-	});
-
+	// text editor management
     var timerEdit,timerEditValue;
 	var editorText = factory.$editor.find('textarea').val();
 	factory.$editor.find('textarea').on('change keyup',function(e,forced){
@@ -121,12 +83,53 @@ Factory.prototype.onCreate = function(){
   		factory.applyConstructorChanges($(this));
   	});
   	
-
-	// tests
-	// factory.$select.find('option').last().get(0).selected = true;
-	// factory.$select.trigger('change');
-  	
+	  	
+	factory.updateDisplay(false);
   	factory.onResize();
+}
+
+Factory.prototype.updateDisplay = function(updateUrl = true){
+	var factory = this;
+	console.log(factory);
+	if (factory.$select.val() != ''){
+		var componentName = factory.$select.val();
+		var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
+		factory.$tabs.removeClass('hidden');
+		factory.$constructor.removeClass('hidden');
+		factory.$tabs.find('.tab.editor').removeClass('cols-1');
+		factory.$sampler.removeClass('hidden');
+		
+		factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
+		factory.$infos.find('.cssClass').html(componentName || '');
+		factory.$infos.find('.version__value').html(app[utils.getClassName(componentName)].version || '');
+		factory.$infos.find('.createdAt').html(app[utils.getClassName(componentName)].createdAt || '');
+		factory.$infos.find('.lastUpdate').html(app[utils.getClassName(componentName)].lastUpdate || '');
+		factory.$infos.find('.loadingMsg').html(app[utils.getClassName(componentName)].loadingMsg || '');
+
+		if (component.find('constructor').length) 
+			factory.$constructor.html(getConstructor(component.find('constructor').remove()));
+		else {
+			factory.$constructor.addClass('hidden').html('');
+			factory.$tabs.find('.tab.editor').addClass('cols-1');
+		}
+		factory.$editor.find('textarea').val(component.get(0).innerHTML);
+		factory.$constructor.find('.select,.number').trigger('change');
+		factory.$constructor.find('.checkbox').each(function(){
+			if($(this).data('selected'))
+	    		$(this).trigger('click');
+		});
+		factory.$editor.find('textarea').trigger('change',true);
+	}
+	else{
+		factory.$editor.find('textarea').val('').trigger('change',true);
+		factory.$tabs.addClass('hidden');
+		factory.$constructor.addClass('hidden').html('');
+		factory.$tabs.find('.tab.editor').addClass('cols-1');
+		factory.$sampler.addClass('hidden');
+	}
+	// update url
+	if(updateUrl)
+		app.updateUrlNavigation(factory.getNavState());
 }
 
 Factory.prototype.getNavState = function(){
@@ -143,6 +146,7 @@ Factory.prototype.getNavState = function(){
 	}
 	return objNav;
 }
+
 Factory.prototype.applyConstructorChanges = function($input){
 	var factory = this;
 
