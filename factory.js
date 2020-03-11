@@ -90,7 +90,6 @@ Factory.prototype.onCreate = function(){
 
 Factory.prototype.updateDisplay = function(updateUrl = true){
 	var factory = this;
-	console.log(factory);
 	if (factory.$select.val() != ''){
 		var componentName = factory.$select.val();
 		var component = $('<div>'+require('html-loader!../'+componentName+'/sample.html')+'</div>');
