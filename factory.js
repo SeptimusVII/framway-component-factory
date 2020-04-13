@@ -5,6 +5,7 @@ Factory.lastUpdate     = "2.0.0";
 Factory.version        = "1";
 Factory.factoryExclude = true;
 Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
+Factory.requires	   = ['tabs'];
 
 Factory.prototype.onResize = function(){
 	var factory = this;
