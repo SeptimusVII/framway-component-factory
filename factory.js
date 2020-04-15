@@ -32,8 +32,8 @@ var Factory = module.exports = function(app){
 			app.updateUrlNavigation(factory.getNavState());
 		});
 
-		if (config.components.length > 1) {
-			for(var item of config.components){
+		if (app.components.length > 1) {
+			for(var item of app.components){
 				if (!app[utils.getClassName(item)].factoryExclude)
 					factory.$select.append('<option value="'+item+'">'+utils.getClassName(item)+'</option>');
 			}
