@@ -34,8 +34,8 @@ var Factory = module.exports = function(app){
 
 		if (app.components.length > 1) {
 			for(var item of app.components){
-				if (!app[utils.getClassName(item)].factoryExclude)
-					factory.$select.append('<option value="'+item+'">'+utils.getClassName(item)+'</option>');
+				if (!app[app.utils.getClassName(item)].factoryExclude)
+					factory.$select.append('<option value="'+item+'">'+app.utils.getClassName(item)+'</option>');
 			}
 			factory.$el.append(factory.$select);
 			factory.$el.append(factory.$sampler);
@@ -69,7 +69,7 @@ var Factory = module.exports = function(app){
 		});
 		factory.$editor.find('.copy').on('click',function(){
 			var elem = $(this).parent().find('textarea').get(0);
-	     	if(utils.copyToClipboard(elem))
+	     	if(app.utils.copyToClipboard(elem))
 	        	notif_fade.success('Copied to clipboard !');
 		});
 
@@ -100,12 +100,12 @@ var Factory = module.exports = function(app){
 			factory.$tabs.find('.tab.editor').removeClass('cols-1');
 			factory.$sampler.removeClass('hidden');
 			
-			factory.$infos.find('.name').html(utils.getClassName(componentName) || '');
+			factory.$infos.find('.name').html(app.utils.getClassName(componentName) || '');
 			factory.$infos.find('.cssClass').html(componentName || '');
-			factory.$infos.find('.version__value').html(app[utils.getClassName(componentName)].version || '');
-			factory.$infos.find('.createdAt').html(app[utils.getClassName(componentName)].createdAt || '');
-			factory.$infos.find('.lastUpdate').html(app[utils.getClassName(componentName)].lastUpdate || '');
-			factory.$infos.find('.loadingMsg').html(app[utils.getClassName(componentName)].loadingMsg || '');
+			factory.$infos.find('.version__value').html(app[app.utils.getClassName(componentName)].version || '');
+			factory.$infos.find('.createdAt').html(app[app.utils.getClassName(componentName)].createdAt || '');
+			factory.$infos.find('.lastUpdate').html(app[app.utils.getClassName(componentName)].lastUpdate || '');
+			factory.$infos.find('.loadingMsg').html(app[app.utils.getClassName(componentName)].loadingMsg || '');
 
 			if (component.find('constructor').length) 
 				factory.$constructor.html(getConstructor(component.find('constructor').remove()));
