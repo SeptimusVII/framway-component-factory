@@ -25,12 +25,13 @@ var Factory = module.exports = function(app){
 		factory.$constructor = $('<div class="factory__constructor"></div>');
 		factory.$infos = $(require('html-loader!./templates/infos.html'));
 		factory.$tabs = $(require('html-loader!./templates/tabs.html'));
-		if(typeof app.Tabs == 'function')
+		if(typeof app.Tabs == 'function'){
 			factory.$tabs.tabs();
 			factory.$tabs.find('.tabs__nav button').on('click',function(){
-			// update url
-			app.updateUrlNavigation(factory.getNavState());
-		});
+				// update url
+				setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
+			});
+		}
 
 		if (app.components.length > 1) {
 			for(var item of app.components){
