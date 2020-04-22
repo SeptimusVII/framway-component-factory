@@ -27,10 +27,11 @@ module.exports = function(app){
 		factory.$tabs = $(require('html-loader!./templates/tabs.html'));
 		if(typeof app.Tabs == 'function'){
 			factory.$tabs.tabs();
-			factory.$tabs.find('.tabs__nav button').on('click',function(){
-				// update url
-				setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
-			});
+			if (typeof app.updateUrlNavigation != 'undefined') {
+				factory.$tabs.find('.tabs__nav button').on('click',function(){ // update url
+					setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
+				});
+			}
 		}
 
 		if (app.components.length > 1) {
@@ -130,7 +131,7 @@ module.exports = function(app){
 			factory.$sampler.addClass('hidden');
 		}
 		// update url
-		if(updateUrl)
+		if(updateUrl && typeof app.updateUrlNavigation != 'undefined')
 			app.updateUrlNavigation(factory.getNavState());
 	}
 
