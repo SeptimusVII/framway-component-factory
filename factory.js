@@ -1,5 +1,5 @@
-var Factory = module.exports = function(app){
-	Factory = Object.getPrototypeOf(app).Factory = new app.Component("factory");
+module.exports = function(app){
+	var Factory = Object.getPrototypeOf(app).Factory = new app.Component("factory");
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
 	Factory.lastUpdate     = "2.0.0";
