@@ -89,7 +89,7 @@ module.exports = function(app){
 	  	
 		  	
 		factory.updateDisplay(false);
-	  	factory.onResize();
+	  	setTimeout(function(){factory.onResize()},1);
 	}
 
 	Factory.prototype.updateDisplay = function(updateUrl = true){

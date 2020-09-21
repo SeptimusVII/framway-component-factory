@@ -11,7 +11,8 @@
 	&.cols-1>.separator{@extend .cols-span-1;}
 	.form-group{
 		label{@include ellipsis(); margin-bottom: 0; }
-		input+label{white-space: normal;display: inline-block;width: 100%;}
+		input+label{white-space: normal;display: block;}
+		// input[type="checkbox"]+label{display: inline-block;width: 100%;}
 		%input{margin-bottom: 0;}
 	}
 }
