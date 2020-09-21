@@ -201,7 +201,7 @@ module.exports = function(app){
 			var inputGroup = '';
 			for(var attr of $(this).get(0).attributes)
 				field[attr.name] = attr.value;
-			field.id = constructor.attr('component') +','+ field.target +','+ field.label.replace(/ /g,'-').toLowerCase();
+			field.id = constructor.attr('component') +','+ field.target +','+ field.label.replace(/ /g,'-').toLowerCase()+','+utils.uniqid();
 			
 			for(var special of arrSpecials){
 				if (field.values && field.values.indexOf(special) != -1)
