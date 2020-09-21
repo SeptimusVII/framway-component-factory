@@ -77,13 +77,13 @@ module.exports = function(app){
 
 
 		// constructor events
-	  	$('body').on('change','.factory__constructor .select',function(e){
+	  	$('body').on('change','.factory__constructor select.select',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
-	  	$('body').on('click','.factory__constructor .checkbox',function(e){
+	  	$('body').on('click','.factory__constructor input.checkbox',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
-	  	$('body').on('change','.factory__constructor .number',function(e){
+	  	$('body').on('change','.factory__constructor input.number',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
 	  	
@@ -152,7 +152,6 @@ module.exports = function(app){
 
 	Factory.prototype.applyConstructorChanges = function($input){
 		var factory = this;
-
 		var $editor  = factory.$editor.find('textarea');
 		var selector = $input.attr('name').split(',')[0];
 		var attr     = $input.attr('name').split(',')[1];
