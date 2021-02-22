@@ -19,12 +19,12 @@ module.exports = function(app){
 	}
 	Factory.prototype.onCreate = function(){
 		var factory = this;
-		factory.$select = $('<select data-component class="factory__select">/select>');
-		factory.$sampler = $('<div class="factory__sampler hidden"></div>');
-		factory.$editor = $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
-		factory.$constructor = $('<div class="factory__constructor"></div>');
-		factory.$infos = $(require('html-loader!./templates/infos.html'));
-		factory.$tabs = $(require('html-loader!./templates/tabs.html'));
+		factory.$select 		= $('<select data-component class="factory__select">/select>');
+		factory.$sampler 		= $('<div class="factory__sampler hidden"></div>');
+		factory.$editor 		= $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
+		factory.$constructor 	= $('<div class="factory__constructor"></div>');
+		factory.$infos 			= $(require('html-loader!./templates/infos.html'));
+		factory.$tabs 			= $(require('html-loader!./templates/tabs.html'));
 		if(typeof app.Tabs == 'function'){
 			factory.$tabs.tabs();
 			if (typeof app.updateUrlNavigation != 'undefined') {
@@ -44,6 +44,9 @@ module.exports = function(app){
 			factory.$el.append(factory.$tabs);
 			factory.$tabs.find('.tab.editor').append(factory.$editor).append($('<div></div>').append(factory.$constructor));
 			factory.$tabs.find('.tab.about').append(factory.$infos);
+			factory.$sampler
+				.wrap(`<div class="factory__sampler--wrapper${factory.$el.closest('.container').length?' container':''}"></div>`)
+				.after('<div class="factory__sampler--toggler compress"><i class="fas fa-expand"></i><i class="fas fa-compress"></i></div>');
 		} else {
 			factory.$el.append('<p class="error">No component available</p>');
 		}
@@ -85,6 +88,12 @@ module.exports = function(app){
 	  	});
 	  	$('body').on('change','.factory__constructor input.number',function(e){
 	  		factory.applyConstructorChanges($(this));
+	  	});
+
+	  	// sampler events
+	  	$('body').on('click','.factory__sampler--toggler',function(e){
+	  		$(this).toggleClass('expand compress');
+	  		$('.factory__sampler--wrapper').toggleClass('popup')
 	  	});
 	  	
 		  	

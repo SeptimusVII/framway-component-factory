@@ -5,7 +5,42 @@
 %factory__block{@extend %paper; padding: 1rem; margin-bottom: 1rem; background: white;}
 
 .factory__select{margin-bottom: 1rem;}
-.factory__sampler{@extend %factory__block; border: 2px dashed rgba($primary,0.5); overflow: visible; }
+.factory__sampler{@extend %factory__block; border: 2px dashed rgba($primary,0.5); overflow: visible; 
+	.factory__sampler--wrapper.popup &{
+		margin: 0;
+    	opacity: 0.5;
+	}
+}
+.factory__sampler--wrapper{position: relative; padding: 0;margin: 0; transition: transform 0.4s; transform-origin: 0 100%;
+	&.popup{
+    	position: fixed;
+    	z-index: 1;
+    	bottom: 1em;
+    	left: 1em;
+    	transform: scale(0.6);
+    	pointer-events: none;
+	}
+}
+.factory__sampler--toggler{
+	@extend %paper; 
+	position: absolute; 
+	top: 100%; 
+	right: 0; 
+	font-size: 22px; 
+	background: white; 
+	width: 40px; 
+	height: 40px; 
+	line-height: 40px; 
+	text-align: center; 
+	border-radius: 100%; 
+	margin-top: 0.5rem; 
+	cursor: pointer;
+    pointer-events: all;
+	i.fa,svg{display: none;}
+	&.compress{.fa-compress{display: inline-block;} }
+	&.expand{.fa-expand{display: inline-block;}}
+	.factory__sampler--wrapper.popup &{top: auto; bottom: 0; right: auto; left: 100%; margin-left: 0.5rem; transform: scale(1.6);}
+}
 .factory__constructor{@extend %factory__block; @extend .d-grid,.cols-2,.gap-1-rem; margin-bottom: 0;
 	& .separator{@extend .cols-span-2;padding-bottom: 0.3em; margin-bottom: 0; border-bottom: 1px solid rgba($primary,0.5); font-weight: bold;}
 	&.cols-1>.separator{@extend .cols-span-1;}
