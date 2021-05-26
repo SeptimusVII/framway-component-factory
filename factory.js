@@ -29,7 +29,8 @@ module.exports = function(app){
 			factory.$tabs.tabs();
 			if (typeof app.updateUrlNavigation != 'undefined') {
 				factory.$tabs.find('.tabs__nav button').on('click',function(){ // update url
-					setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
+					if (factory.$el.parent('.tab').hasClass('active'))
+						setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
 				});
 			}
 		}
