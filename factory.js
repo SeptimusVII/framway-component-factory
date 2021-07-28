@@ -30,7 +30,10 @@ module.exports = function(app){
 			if (typeof app.updateUrlNavigation != 'undefined') {
 				factory.$tabs.find('.tabs__nav button').on('click',function(){ // update url
 					if (factory.$el.parent('.tab').hasClass('active'))
-						setTimeout(function(){app.updateUrlNavigation(factory.getNavState())});
+						setTimeout(function(){
+							if(app.debug) console.log('app.updateUrlNavigation from factory');
+							app.updateUrlNavigation(factory.getNavState())
+						});
 				});
 			}
 		}
