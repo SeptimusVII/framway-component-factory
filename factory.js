@@ -261,8 +261,17 @@ module.exports = function(app){
 
 	var getSpecials = function(special,base){
 		var result = [];
+		var arrItems = app.styles[special.replace('#','')];
 		base = base.replace(special,'');
-		for(var item in app.styles[special.replace('#','')])
+		if (special == '#colors')
+			arrItems = Object.assign({
+				'primary': app.styles.primary,
+				'secondary': app.styles.secondary,
+				'success': app.styles.success,
+				'error': app.styles.error,
+				'warning': app.styles.warning,
+			},arrItems);
+		for(var item in arrItems)
 			result.push(base+item);
 		return result.join(',');
 	}
