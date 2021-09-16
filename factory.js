@@ -100,9 +100,7 @@ module.exports = function(app){
 	  		$('.factory__sampler--wrapper').toggleClass('popup')
 	  	});
 	  	
-		  	
 		factory.updateDisplay(false);
-	  	setTimeout(function(){factory.onResize()},1);
 	}
 
 	Factory.prototype.updateDisplay = function(updateUrl = true){
@@ -146,6 +144,7 @@ module.exports = function(app){
 		// update url
 		if(updateUrl && typeof app.updateUrlNavigation != 'undefined')
 			app.updateUrlNavigation(factory.getNavState());
+		setTimeout(function(){factory.onResize()},1);
 	}
 
 	Factory.prototype.getNavState = function(){
