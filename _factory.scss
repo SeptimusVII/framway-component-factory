@@ -49,6 +49,8 @@
 		input+label{white-space: normal;display: block;}
 		// input[type="checkbox"]+label{display: inline-block;width: 100%;}
 		%input{margin-bottom: 0;}
+		.input-number__container,
+		.select2FW-wrapper .select2-container{margin: 0;}
 	}
 }
 .factory__component__infos{@extend %factory__block;

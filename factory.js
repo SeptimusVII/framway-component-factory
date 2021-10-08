@@ -93,6 +93,9 @@ module.exports = function(app){
 	  	$('body').on('change','.factory__constructor input.number',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
+	  	$('body').on('change keyup','.factory__constructor input.text',function(e){
+	  		factory.applyConstructorChanges($(this));
+	  	});
 
 	  	// sampler events
 	  	$('body').on('click','.factory__sampler--toggler',function(e){
@@ -127,7 +130,7 @@ module.exports = function(app){
 				factory.$tabs.find('.tab.editor').addClass('cols-1');
 			}
 			factory.$editor.find('textarea').val(component.get(0).innerHTML);
-			factory.$constructor.find('.select,.number').trigger('change');
+			factory.$constructor.find('.select,.number,.text').trigger('change');
 			factory.$constructor.find('.checkbox').each(function(){
 				if($(this).data('selected'))
 		    		$(this).trigger('click');
@@ -192,6 +195,10 @@ module.exports = function(app){
 	     	match = match.join(' ');
 	      	if($input.val())
 	        	value = prefix+$input.val();
+	    } else if($input.hasClass('text')){
+	    	var prefix = $input.data('prefix') || '';
+	    	if($input.val())
+	        	value = prefix+$input.val();
 	    }
 
 		if(attr == 'class'){
@@ -213,7 +220,7 @@ module.exports = function(app){
 			var inputGroup = '';
 			for(var attr of $(this).get(0).attributes)
 				field[attr.name] = attr.value;
-			field.id = constructor.attr('component') +','+ field.target +','+ field.label.replace(/ /g,'-').toLowerCase()+','+utils.uniqid();
+			field.id = (field.type!='separator' && field.type!='empty') ? constructor.attr('component') +','+ field.target +','+ field.label.replace(/ /g,'-').toLowerCase()+','+utils.uniqid() : '';
 			
 			for(var special of arrSpecials){
 				if (field.values && field.values.indexOf(special) != -1)
@@ -222,7 +229,7 @@ module.exports = function(app){
 					field.labels = getSpecials(special,field.labels)
 			}
 
-			if (field.type!='separator'){
+			if (field.type!='separator' && field.type!='empty'){
 				inputGroup += '<div class="form-group">';
 				if (field.helper && field.helper != ''){
 					inputGroup += '<i class="factory__helper__icon fas fa-question-circle"></i>';
@@ -232,6 +239,9 @@ module.exports = function(app){
 			switch(field.type){
 				case 'separator': 
 					inputGroup += '<p class="separator">'+field.label+'</p>';
+				break;
+				case 'empty': 
+					inputGroup += '<div></div>';
 				break;
 				case 'select': 
 					inputGroup += '<label for="'+field.id+'">'+field.label+'</label>'
@@ -246,13 +256,17 @@ module.exports = function(app){
 								+ '<label for="'+field.id+'">'+field.label+'</label>'
 				break;
 				case 'number':
-					var range = field.range.split('-');
+					var range = field.range?field.range.split('-'):[];
 					inputGroup += '<label for="'+field.id+'">'+field.label+'</label>'
-								+ '<input type="number" min="'+range[0]+'" max="'+range[1]+'" '+(field.prefix?'data-prefix="'+field.prefix+'"':'')+' class="'+field.type+'" name="'+field.id+'" id="'+field.id+'" value="'+field.value+'" />'
+								+ '<input type="number" '+(range[0]?'min="'+range[0]+'"':'')+' '+(range[1]?'max="'+range[1]+'"':'')+' '+(field.step?'step="'+field.step+'"':'')+' '+(field.prefix?'data-prefix="'+field.prefix+'"':'')+' class="'+field.type+'" name="'+field.id+'" id="'+field.id+'" value="'+field.value+'" />'
+				break;
+				case 'text':
+					inputGroup += '<label for="'+field.id+'">'+field.label+'</label>'
+								+ '<input type="text" '+(field.prefix?'data-prefix="'+field.prefix+'"':'')+' class="'+field.type+'" name="'+field.id+'" id="'+field.id+'" value="'+field.value+'" />'
 				break;
 				default: break;
 			}
-			if (field.type!='separator')
+			if (field.type!='separator' && field.type!='empty')
 				inputGroup += '</div>';
 			result += inputGroup;
 		});
