@@ -64,7 +64,7 @@
 
 .factory__editor{position: relative; font-size: 0.8em;
 	textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing*0.5; border-radius: $radius;  margin-bottom: 0; border: 0;}
-	.copy{position: absolute; right: 5px; top:5px; @extend .btn-sm; z-index: 1; opacity: 0.5; margin: 0;
+	.copy{position: absolute; right: 5px; top:5px; z-index: 1; opacity: 0.5; margin: 0;
 	  &:hover{opacity: 1;}
 	}
 }

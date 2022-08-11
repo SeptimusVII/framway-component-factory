@@ -21,7 +21,7 @@ module.exports = function(app){
 		var factory = this;
 		factory.$select 		= $('<select data-component class="factory__select">/select>');
 		factory.$sampler 		= $('<div class="factory__sampler hidden"></div>');
-		factory.$editor 		= $('<div class="factory__editor"><button class="copy">Copy</button><textarea></textarea></div>');
+		factory.$editor 		= $('<div class="factory__editor"><button class="copy btn-sm">Copy</button><textarea></textarea></div>');
 		factory.$constructor 	= $('<div class="factory__constructor"></div>');
 		factory.$infos 			= $(require('html-loader!./templates/infos.html'));
 		factory.$tabs 			= $(require('html-loader!./templates/tabs.html'));
