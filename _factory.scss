@@ -2,7 +2,7 @@
 	.tab.editor{@extend .d-grid,.cols-2,.gap-1-rem;font-size: 0.8em;}
 }
 
-%factory__block{@extend %paper; padding: 1rem; margin-bottom: 1rem; background: white;}
+%factory__block{@include paper(); padding: 1rem; margin-bottom: 1rem; background: white;}
 
 .factory__select{margin-bottom: 1rem;}
 .factory__sampler{@extend %factory__block; border: 2px dashed rgba($primary,0.5); overflow: visible; 
@@ -22,7 +22,7 @@
 	}
 }
 .factory__sampler--toggler{
-	@extend %paper; 
+	@include paper(); 
 	position: absolute; 
 	top: 100%; 
 	right: 0; 
@@ -72,6 +72,6 @@
 .factory__helper__icon{float: right; margin: 0.3em; cursor: pointer;
     &:hover+.factory__helper__text{opacity: 1;visibility: visible;}
 }
-.factory__helper__text{@extend %paper !optional; background-color: #fff; left: 0;right: 0;margin: auto; padding: 15px;  position: absolute; width: fit-content; max-width: 80%; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 1;
+.factory__helper__text{@include paper(); background-color: #fff; left: 0;right: 0;margin: auto; padding: 15px;  position: absolute; width: fit-content; max-width: 80%; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 1;
 	&:hover{opacity: 1;visibility: visible;}
 }
