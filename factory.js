@@ -2,7 +2,7 @@ module.exports = function(app){
 	var Factory = Object.getPrototypeOf(app).Factory = new app.Component("factory");
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
-	Factory.lastUpdate     = "2.2.1";
+	Factory.lastUpdate     = "2.4.0";
 	Factory.version        = "1.0.2";
 	Factory.factoryExclude = true;
 	Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
