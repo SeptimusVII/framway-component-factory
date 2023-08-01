@@ -3,7 +3,7 @@ module.exports = function(app){
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
 	Factory.lastUpdate     = "2.2.1";
-	Factory.version        = "1.0.1";
+	Factory.version        = "1.0.2";
 	Factory.factoryExclude = true;
 	Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
 	Factory.requires	   = ['tabs'];
@@ -90,7 +90,7 @@ module.exports = function(app){
 	  	$('body').on('click','.factory__constructor input.checkbox',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
-	  	$('body').on('change','.factory__constructor input.number',function(e){
+	  	$('body').on('change keyup','.factory__constructor input.number',function(e){
 	  		factory.applyConstructorChanges($(this));
 	  	});
 	  	$('body').on('change keyup','.factory__constructor input.text',function(e){
