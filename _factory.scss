@@ -1,5 +1,8 @@
 .factory{
-	.tab.editor{@include grid(); @extend .cols-2; gap: 1rem; font-size: 0.8em;}
+	.tab.editor{@include grid(); gap: 1rem; font-size: 0.8em; 
+		grid-template-columns: 50% 50%;
+		&.cols-1{grid-template-columns: 100%;}
+	}
 }
 
 %factory__block{@include paper(); padding: 1rem; margin-bottom: 1rem; background: white;}
@@ -66,7 +69,7 @@
 	textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing*0.5; border-radius: $radius;  margin-bottom: 0; border: 0;
 		&.hidden+.controls{margin-top: 1rem;}
 	}
-	.controls{position: absolute; left: 100%;  top: 0; z-index: 1; opacity: 0.5; display: grid; gap: 0.5em; padding: 0 0.5em; width: max-content;
+	.controls{position: absolute; right: 100%;  top: 0; z-index: 1; opacity: 0.5; display: grid; gap: 0.5em; padding: 0 0.5em; width: max-content;
 		%btn{margin: 0;}
 		&:hover{opacity: 1;}
 		@include media-max(sm){right: 0; left: auto; top: 0.5em}

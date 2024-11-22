@@ -3,7 +3,7 @@ module.exports = function(app){
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
 	Factory.lastUpdate     = "2.5.1";
-	Factory.version        = "1.1.0";
+	Factory.version        = "1.1.1";
 	Factory.factoryExclude = true;
 	Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
 	Factory.requires	   = ['tabs'];
@@ -85,7 +85,7 @@ module.exports = function(app){
 			$(this).find('span.label').toggleClass('hidden')
 			factory.$editor.find('textarea').toggleClass('hidden').trigger('change');
 			localStorage.setItem('factory__editor__hide',factory.$editor.find('textarea').hasClass('hidden'))
-		});
+		}).remove();
 		if (localStorage.getItem('factory__editor__hide') == 'true')
 			factory.$editor.find('.toggle-visibility').trigger('click')
 
