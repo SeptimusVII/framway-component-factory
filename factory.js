@@ -2,8 +2,8 @@ module.exports = function(app){
 	var Factory = Object.getPrototypeOf(app).Factory = new app.Component("factory");
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
-	Factory.lastUpdate     = "2.4.4";
-	Factory.version        = "1.0.3";
+	Factory.lastUpdate     = "2.5.1";
+	Factory.version        = "1.1.0";
 	Factory.factoryExclude = true;
 	Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
 	Factory.requires	   = ['tabs'];
@@ -21,7 +21,7 @@ module.exports = function(app){
 		var factory = this;
 		factory.$select 		= $('<select data-component class="factory__select">/select>');
 		factory.$sampler 		= $('<div class="factory__sampler hidden"></div>');
-		factory.$editor 		= $('<div class="factory__editor"><button class="copy btn-sm">Copy</button><textarea></textarea></div>');
+		factory.$editor 		= $('<div class="factory__editor"><textarea></textarea><div class="controls"><button class="copy btn-sm">Copy</button><button class="toggle-visibility btn-sm"><span class="label hidden">Show</span><span class="label">Hide</span> editor</button></div></div>');
 		factory.$constructor 	= $('<div class="factory__constructor"></div>');
 		factory.$infos 			= $(require('html-loader!./templates/infos.html'));
 		factory.$tabs 			= $(require('html-loader!./templates/tabs.html'));
@@ -77,10 +77,17 @@ module.exports = function(app){
 	     	this.style.height = (this.scrollHeight + 10) + "px";
 		});
 		factory.$editor.find('.copy').on('click',function(){
-			var elem = $(this).parent().find('textarea').get(0);
+			var elem = factory.$editor.find('textarea').get(0);
 	     	if(app.utils.copyToClipboard(elem))
 	        	notif_fade.success('Copied to clipboard !');
 		});
+		factory.$editor.find('.toggle-visibility').on('click',function(){
+			$(this).find('span.label').toggleClass('hidden')
+			factory.$editor.find('textarea').toggleClass('hidden').trigger('change');
+			localStorage.setItem('factory__editor__hide',factory.$editor.find('textarea').hasClass('hidden'))
+		});
+		if (localStorage.getItem('factory__editor__hide') == 'true')
+			factory.$editor.find('.toggle-visibility').trigger('click')
 
 
 		// constructor events

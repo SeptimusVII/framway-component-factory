@@ -63,9 +63,13 @@
 }
 
 .factory__editor{position: relative; font-size: 0.8em;
-	textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing*0.5; border-radius: $radius;  margin-bottom: 0; border: 0;}
-	.copy{position: absolute; right: 5px; top:5px; z-index: 1; opacity: 0.5; margin: 0;
-	  &:hover{opacity: 1;}
+	textarea{ resize: none; overflow: hidden;  font-family: monospace; background: color(blacklight); color: color(white); padding: $spacing*0.5; border-radius: $radius;  margin-bottom: 0; border: 0;
+		&.hidden+.controls{margin-top: 1rem;}
+	}
+	.controls{position: absolute; left: 100%;  top: 0; z-index: 1; opacity: 0.5; display: grid; gap: 0.5em; padding: 0 0.5em; width: max-content;
+		%btn{margin: 0;}
+		&:hover{opacity: 1;}
+		@include media-max(sm){right: 0; left: auto; top: 0.5em}
 	}
 }
 
