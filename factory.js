@@ -3,7 +3,7 @@ module.exports = function(app){
 	// Factory.debug = true;
 	Factory.createdAt      = "2.0.0";
 	Factory.lastUpdate     = "2.5.1";
-	Factory.version        = "1.1.1";
+	Factory.version        = "1.1.2";
 	Factory.factoryExclude = true;
 	Factory.loadingMsg     = (!app.components.includes('tabs')?"This component require the following components to work properly: \n - tabs":null);
 	Factory.requires	   = ['tabs'];
@@ -219,7 +219,7 @@ module.exports = function(app){
 	    $editor.val(dummy.parent().get(0).innerHTML).trigger('keyup');
 	};
 
-	var arrSpecials = ['#colors','#breakpoints'];
+	var arrSpecials = ['#colors','#colors-hexa','#breakpoints'];
 	var getConstructor = function(constructor){
 		var result = '';
 		constructor.find('field').each(function(){
@@ -284,7 +284,7 @@ module.exports = function(app){
 		var result = [];
 		var arrItems = app.styles[special.replace('#','')];
 		base = base.replace(special,'');
-		if (special == '#colors')
+		if (special.includes('#colors'))
 			arrItems = Object.assign({
 				'primary': app.styles.primary,
 				'secondary': app.styles.secondary,
@@ -292,8 +292,12 @@ module.exports = function(app){
 				'error': app.styles.error,
 				'warning': app.styles.warning,
 			},arrItems);
-		for(var item in arrItems)
-			result.push(base+item);
+		for(var item in arrItems){
+			if (base == '-hexa') 
+				result.push(arrItems[item]);
+			else
+				result.push(base+item);
+		}
 		return result.join(',');
 	}
 
